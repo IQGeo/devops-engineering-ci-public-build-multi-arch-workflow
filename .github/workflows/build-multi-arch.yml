@@ -27,6 +27,7 @@ on:
           HARBOR_CLI_SECRET:
               required: true
           HARBOR_USERNAME:
+            required: true
 
 jobs:
   build-arm64-image:
