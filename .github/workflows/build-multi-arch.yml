@@ -18,22 +18,11 @@ on:
         version:
           type: string
       secrets:
-          GH_TOKEN:
-              required: true
-          AZURE_STORAGE_ACCOUNT_KEY:
-              required: true
-          AZURE_CREDENTIALS:
-              required: true
           REGISTRY_LOGIN_SERVER:
-              required: true
           REGISTRY_USERNAME:
-              required: true
           REGISTRY_PASSWORD:
-              required: true
           HARBOR_CLI_SECRET:
-              required: true
           HARBOR_USERNAME:
-              required: true
 
 jobs:
   build-arm64-image:
