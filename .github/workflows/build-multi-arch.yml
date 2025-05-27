@@ -17,17 +17,17 @@ on:
           type: string
         version:
           type: string
-      secrets:
-          REGISTRY_LOGIN_SERVER:
-              required: true
-          REGISTRY_USERNAME:
-              required: true
-          REGISTRY_PASSWORD:
-              required: true
-          HARBOR_CLI_SECRET:
-              required: true
-          HARBOR_USERNAME:
-            required: true
+    #   secrets:
+    #       REGISTRY_LOGIN_SERVER:
+    #           required: true
+    #       REGISTRY_USERNAME:
+    #           required: true
+    #       REGISTRY_PASSWORD:
+    #           required: true
+    #       HARBOR_CLI_SECRET:
+    #           required: true
+    #       HARBOR_USERNAME:
+    #         required: true
 
 jobs:
   build-arm64-image:
