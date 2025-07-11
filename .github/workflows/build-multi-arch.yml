@@ -34,7 +34,7 @@ jobs:
     runs-on: arm64
     steps:
       - name: build-arm64-image
-        uses: IQGeo/platform-tooling-ci-public-build-push-action@main
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
@@ -53,7 +53,7 @@ jobs:
     runs-on: x64
     steps:
       - name: build-amd64-image
-        uses: IQGeo/platform-tooling-ci-public-build-push-action@main
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
@@ -73,7 +73,7 @@ jobs:
     runs-on: x64
     steps:
       - name: build-multi-arch
-        uses: IQGeo/platform-tooling-ci-public-multi-arch-action@main
+        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@main
         with:
           version: ${{ inputs.version }}
           amd_tag: ${{ inputs.version }}_amd-64
