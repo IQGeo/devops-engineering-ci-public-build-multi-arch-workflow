@@ -39,7 +39,7 @@ jobs:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
           version: ${{ inputs.version }}
-          tag: ${{ inputs.version }}_arm-64
+          tag: ${{ github.run_id }}_arm-64
           platform: arm64
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
@@ -58,7 +58,7 @@ jobs:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
           version: ${{ inputs.version }}
-          tag: ${{ inputs.version }}_amd-64
+          tag: ${{ github.run_id }}_amd-64
           platform: x64
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
