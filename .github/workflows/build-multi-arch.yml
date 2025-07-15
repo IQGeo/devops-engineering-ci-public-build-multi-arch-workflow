@@ -76,8 +76,8 @@ jobs:
         uses: IQGeo/devops-engineering-ci-public-multi-arch-action@main
         with:
           version: ${{ inputs.version }}
-          amd_tag: ${{ inputs.version }}_amd-64
-          arm_tag: ${{ inputs.version }}_arm-64
+          amd_tag: ${{ github.run_id }}_amd-64
+          arm_tag: ${{ github.run_id }}_arm-64
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
           registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
