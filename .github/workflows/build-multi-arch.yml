@@ -76,7 +76,7 @@ jobs:
           file: ${{ inputs.dockerfile_path }}
           context: ${{ inputs.docker_context }}
           build-args: |
-              MODULE=${{inputs.module}}
+              MODULE=${{ inputs.module }}
               VERSION=${{ inputs.version }}
               CUTPATH=${{ inputs.module }}
           platforms: |
