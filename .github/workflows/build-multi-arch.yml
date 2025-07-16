@@ -30,56 +30,91 @@ on:
             required: true
 
 jobs:
-  build-arm64-image:
-    runs-on: arm64
+  build-and-push:
+    runs-on: ubuntu-latest
     steps:
-      - name: build-arm64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+      - name: Login to ACR
+        uses: azure/docker-login@v1
         with:
-          dockerfile_path: ${{ inputs.dockerfile_path }}
-          docker_context: ${{ inputs.docker_context }}
-          version: ${{ inputs.version }}
-          tag: ${{ github.run_id }}_arm-64
-          platform: arm64
-          module: ${{ inputs.module }}
-          acr: ${{ inputs.acr }}
-          harbor: ${{ inputs.harbor }}
-          registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
-          registry_username : ${{ secrets.REGISTRY_USERNAME  }}
-          registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
-          harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
-          harbor_username : ${{ secrets.HARBOR_USERNAME  }}
-  build-amd64-image:
-    runs-on: x64
-    steps:
-      - name: build-amd64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Download binaries
+        uses: actions/download-artifact@v4
         with:
-          dockerfile_path: ${{ inputs.dockerfile_path }}
-          docker_context: ${{ inputs.docker_context }}
-          version: ${{ inputs.version }}
-          tag: ${{ github.run_id }}_amd-64
-          platform: x64
-          module: ${{ inputs.module }}
-          acr: ${{ inputs.acr }}
-          harbor: ${{ inputs.harbor }}
-          registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
-          registry_username : ${{ secrets.REGISTRY_USERNAME  }}
-          registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
-          harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
-          harbor_username : ${{ secrets.HARBOR_USERNAME  }}
-  build-multi-arch:
-    needs: [ build-arm64-image, build-amd64-image ]
-    runs-on: x64
-    steps:
-      - name: build-multi-arch
-        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@main
+            name: binaries
+            path: ${{ inputs.module }}
+
+      - name: Login to harbor
+        run: |
+          docker login -u ${{ secrets.HARBOR_USERNAME }} -p ${{ secrets.HARBOR_CLI_SECRET }} ${{ inputs.harbor }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
         with:
-          version: ${{ inputs.version }}
-          amd_tag: ${{ github.run_id }}_amd-64
-          arm_tag: ${{ github.run_id }}_arm-64
-          module: ${{ inputs.module }}
-          acr: ${{ inputs.acr }}
-          registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
-          registry_username : ${{ secrets.REGISTRY_USERNAME  }}
-          registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
+          file: ${{ inputs.dockerfile_path }}
+          context: ${{ inputs.docker_context }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ inputs.acr }}/${{ inputs.module }}:${{ inputs.version }}, ${{ inputs.acr }}/${{ inputs.module }}:latest
+
+  # build-arm64-image:
+  #   runs-on: arm64
+  #   steps:
+  #     - name: build-arm64-image
+  #       uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+  #       with:
+  #         dockerfile_path: ${{ inputs.dockerfile_path }}
+  #         docker_context: ${{ inputs.docker_context }}
+  #         version: ${{ inputs.version }}
+  #         tag: ${{ github.run_id }}_arm-64
+  #         platform: arm64
+  #         module: ${{ inputs.module }}
+  #         acr: ${{ inputs.acr }}
+  #         harbor: ${{ inputs.harbor }}
+  #         registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
+  #         registry_username : ${{ secrets.REGISTRY_USERNAME  }}
+  #         registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
+  #         harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
+  #         harbor_username : ${{ secrets.HARBOR_USERNAME  }}
+  # build-amd64-image:
+  #   runs-on: x64
+  #   steps:
+  #     - name: build-amd64-image
+  #       uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+  #       with:
+  #         dockerfile_path: ${{ inputs.dockerfile_path }}
+  #         docker_context: ${{ inputs.docker_context }}
+  #         version: ${{ inputs.version }}
+  #         tag: ${{ github.run_id }}_amd-64
+  #         platform: x64
+  #         module: ${{ inputs.module }}
+  #         acr: ${{ inputs.acr }}
+  #         harbor: ${{ inputs.harbor }}
+  #         registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
+  #         registry_username : ${{ secrets.REGISTRY_USERNAME  }}
+  #         registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
+  #         harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
+  #         harbor_username : ${{ secrets.HARBOR_USERNAME  }}
+  # build-multi-arch:
+  #   needs: [ build-arm64-image, build-amd64-image ]
+  #   runs-on: x64
+  #   steps:
+  #     - name: build-multi-arch
+  #       uses: IQGeo/devops-engineering-ci-public-multi-arch-action@main
+  #       with:
+  #         version: ${{ inputs.version }}
+  #         amd_tag: ${{ github.run_id }}_amd-64
+  #         arm_tag: ${{ github.run_id }}_arm-64
+  #         module: ${{ inputs.module }}
+  #         acr: ${{ inputs.acr }}
+  #         registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
+  #         registry_username : ${{ secrets.REGISTRY_USERNAME  }}
+  #         registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
