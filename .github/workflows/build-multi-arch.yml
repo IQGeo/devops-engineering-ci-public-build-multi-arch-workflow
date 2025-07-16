@@ -55,7 +55,7 @@ jobs:
             pwd
             ls -la
             echo "VERSION: ${{ inputs.version }}"
-            echo "LOGIN SERVER: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            echo "LOGIN SERVER: ${{ secrets.REGISTRY_LOGIN_SERVER }}"
             echo "TAG:  ${{ inputs.tag }}"
             mkdir -p ${{ github.workspace }}/${{ inputs.module }}/${{ inputs.version }}
             ls -la ${{ github.workspace }}/${{ inputs.module }}
