@@ -75,6 +75,7 @@ jobs:
         with:
           file: ${{ inputs.dockerfile_path }}
           context: ${{ inputs.docker_context }}
+          build-args: MODULE=${{inputs.module}}, VERSION=${{ inputs.version }}, CUTPATH=${{ inputs.module }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ inputs.acr }}/${{ inputs.module }}:${{ inputs.version }}, ${{ inputs.acr }}/${{ inputs.module }}:latest
