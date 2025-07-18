@@ -73,7 +73,7 @@ jobs:
     runs-on: x64
     steps:
       - name: build-multi-arch
-        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@test-re-tagging
+        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@test-advanced-re-tagging
         with:
           version: ${{ inputs.version }}
           amd_tag: ${{ github.run_id }}_amd-64
