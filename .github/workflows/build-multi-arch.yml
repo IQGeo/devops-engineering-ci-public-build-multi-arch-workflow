@@ -13,7 +13,8 @@ on:
           type: string
         platform:
           type: string
-        tag:
+        updated_tags:
+          description: 'Comma-seperated list of new tags'
           type: string
         version:
           type: string
@@ -78,6 +79,7 @@ jobs:
           version: ${{ inputs.version }}
           amd_tag: ${{ github.run_id }}_amd-64
           arm_tag: ${{ github.run_id }}_arm-64
+          updated_tags: ${{ inputs.updated_tags}}
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
           registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
