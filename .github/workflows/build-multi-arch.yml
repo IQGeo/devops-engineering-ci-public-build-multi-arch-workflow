@@ -73,6 +73,9 @@ jobs:
     needs: [ build-arm64-image, build-amd64-image ]
     runs-on: x64
     steps:
+      - name: Debug
+        run: |
+          echo "${{ inputs.updated_tags }}"
       - name: build-multi-arch
         uses: IQGeo/devops-engineering-ci-public-multi-arch-action@main
         with:
