@@ -77,7 +77,7 @@ jobs:
         run: |
           echo "${{ inputs.updated_tags }}"
       - name: build-multi-arch
-        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@main
+        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@test-harbor-push
         with:
           version: ${{ inputs.version }}
           amd_tag: ${{ github.run_id }}_amd-64
