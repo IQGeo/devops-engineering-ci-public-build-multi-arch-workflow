@@ -85,6 +85,9 @@ jobs:
           updated_tags: ${{ inputs.updated_tags}}
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
+          harbor: ${{ inputs.harbor }}
           registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
           registry_username : ${{ secrets.REGISTRY_USERNAME  }}
           registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
+          harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
+          harbor_username : ${{ secrets.HARBOR_USERNAME  }}
