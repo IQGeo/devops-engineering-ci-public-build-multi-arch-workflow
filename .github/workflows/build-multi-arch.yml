@@ -31,26 +31,35 @@ on:
             required: true
 
 jobs:
-  build-arm64-image:
-    runs-on: arm64
-    steps:
-      - name: build-arm64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
-        with:
-          dockerfile_path: ${{ inputs.dockerfile_path }}
-          docker_context: ${{ inputs.docker_context }}
-          version: ${{ inputs.version }}
-          tag: ${{ github.run_id }}_arm-64
-          platform: arm64
-          module: ${{ inputs.module }}
-          acr: ${{ inputs.acr }}
-          harbor: ${{ inputs.harbor }}
-          registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
-          registry_username : ${{ secrets.REGISTRY_USERNAME  }}
-          registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
-          harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
-          harbor_username : ${{ secrets.HARBOR_USERNAME  }}
-  build-amd64-image:
+  # build-arm64-image:
+  #   runs-on: arm64
+  #   steps:
+  #     - name: build-arm64-image
+  #       uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+  #       with:
+  #         dockerfile_path: ${{ inputs.dockerfile_path }}
+  #         docker_context: ${{ inputs.docker_context }}
+  #         version: ${{ inputs.version }}
+  #         tag: ${{ github.run_id }}_arm-64
+  #         platform: arm64
+  #         module: ${{ inputs.module }}
+  #         acr: ${{ inputs.acr }}
+  #         harbor: ${{ inputs.harbor }}
+  #         registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
+  #         registry_username : ${{ secrets.REGISTRY_USERNAME  }}
+  #         registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
+  #         harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
+  #         harbor_username : ${{ secrets.HARBOR_USERNAME  }}
+  build-amd64-arm64-images:
+    strategy:
+      matrix:
+        tag: [ '${{ github.run_id }}_amd-64', '${{ github.run_id }}_arm-64 ']
+        platform: [ 'arm64', 'x64' ]
+        exclude:
+          - tag: '${{ github.run_id }}_amd-64'
+            platform: 'arm64'
+          - tag: '${{ github.run_id }}_arm-64 '
+            platform: 'x64'
     runs-on: x64
     steps:
       - name: build-amd64-image
@@ -59,8 +68,8 @@ jobs:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
           version: ${{ inputs.version }}
-          tag: ${{ github.run_id }}_amd-64
-          platform: x64
+          tag: ${{ matrix.tag }}
+          platform: ${{ matrix.platform }}
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
           harbor: ${{ inputs.harbor }}
@@ -70,7 +79,7 @@ jobs:
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}
   build-multi-arch:
-    needs: [ build-arm64-image, build-amd64-image ]
+    needs: build-amd64-arm64-images
     runs-on: x64
     steps:
       - name: Debug
