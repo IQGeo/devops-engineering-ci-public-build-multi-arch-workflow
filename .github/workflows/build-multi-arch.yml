@@ -30,6 +30,8 @@ on:
           HARBOR_USERNAME:
             required: true
 
+run-name: Build ${{ inputs.module }}:${{ inputs.tag }}
+
 jobs:
   build-arm64-image:
     runs-on: arm64
