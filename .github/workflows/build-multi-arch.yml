@@ -1,23 +1,41 @@
+name: Build Multi-Arch Workflow
+description: Workflow to build amd64 + arm64 images in parallel on their respective runners and then build a multi-architecture manifest once both images are built.
+
 on:
     workflow_call:
       inputs:
         acr:
+          description: 'IQGeos Azure container registry server name'
           type: string
+          required: true
         dockerfile_path:
+          description: 'Path to the dockerfile for this specific image build (injector, platform w/ module, editions)'
           type: string
+          required: true
         docker_context:
+          description: 'Build context for the docker image to reference'
           type: string
+          required: true
         harbor:
+          description: 'IQGeos Harbor container registry server name'
           type: string
+          required: true
         module:
+          description: 'Module to build (product, devdb, editions)'
           type: string
-        platform:
-          type: string
+          required: true
         updated_tags:
-          description: 'Comma-seperated list of new tags'
+          description: 'Comma-seperated list of new tags to retag multi arch image as once it is built (pre-release, latest)'
           type: string
+          required: true
         version:
+          description: 'Version to build'
           type: string
+          required: true
+        build_id:
+          description: 'Unique build ID per workflow run'
+          type: string
+          required: true
       secrets:
           REGISTRY_LOGIN_SERVER:
               required: true
@@ -30,6 +48,7 @@ on:
           HARBOR_USERNAME:
             required: true
 
+# Should we use version or the updated_tags list instead of tag?
 run-name: Build ${{ inputs.module }}:${{ inputs.tag }}
 
 jobs:
@@ -42,7 +61,7 @@ jobs:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
           version: ${{ inputs.version }}
-          tag: ${{ github.run_id }}_arm-64
+          tag: ${{ inputs.build_id }}_arm-64
           platform: arm64
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
@@ -61,7 +80,7 @@ jobs:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
           version: ${{ inputs.version }}
-          tag: ${{ github.run_id }}_amd-64
+          tag: ${{ inputs.build_id }}_amd-64
           platform: x64
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
@@ -71,34 +90,6 @@ jobs:
           registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}  
-  # build-amd64-arm64-images:
-  #   strategy:
-  #     matrix:
-  #       tag: [ '${{ github.run_id }}_amd-64', '${{ github.run_id }}_arm-64 ']
-  #       platform: [ 'arm64', 'x64' ]
-  #       exclude:
-  #         - tag: '${{ github.run_id }}_amd-64'
-  #           platform: 'arm64'
-  #         - tag: '${{ github.run_id }}_arm-64 '
-  #           platform: 'x64'
-  #   runs-on: ${{ matrix.platform }}
-  #   steps:
-  #     - name: build-amd64-image
-  #       uses: IQGeo/devops-engineering-ci-public-build-push-action@main
-  #       with:
-  #         dockerfile_path: ${{ inputs.dockerfile_path }}
-  #         docker_context: ${{ inputs.docker_context }}
-  #         version: ${{ inputs.version }}
-  #         tag: ${{ matrix.tag }}
-  #         platform: ${{ matrix.platform }}
-  #         module: ${{ inputs.module }}
-  #         acr: ${{ inputs.acr }}
-  #         harbor: ${{ inputs.harbor }}
-  #         registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
-  #         registry_username : ${{ secrets.REGISTRY_USERNAME  }}
-  #         registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
-  #         harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
-  #         harbor_username : ${{ secrets.HARBOR_USERNAME  }}
   build-multi-arch:
     needs: [ build-amd64-image, build-arm64-image ]
     runs-on: x64
@@ -110,8 +101,8 @@ jobs:
         uses: IQGeo/devops-engineering-ci-public-multi-arch-action@test-harbor-push
         with:
           version: ${{ inputs.version }}
-          amd_tag: ${{ github.run_id }}_amd-64
-          arm_tag: ${{ github.run_id }}_arm-64
+          amd_tag: ${{ inputs.build_id }}_amd-64
+          arm_tag: ${{ inputs.build_id }}_arm-64
           updated_tags: ${{ inputs.updated_tags}}
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
