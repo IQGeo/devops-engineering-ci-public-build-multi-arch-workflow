@@ -37,6 +37,8 @@ on:
           type: string
           required: true
       secrets:
+          GH_TOKEN:
+              required: true
           REGISTRY_LOGIN_SERVER:
               required: true
           REGISTRY_USERNAME:
@@ -66,7 +68,6 @@ jobs:
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
           harbor: ${{ inputs.harbor }}
-          registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
           registry_username : ${{ secrets.REGISTRY_USERNAME  }}
           registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
@@ -85,7 +86,6 @@ jobs:
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
           harbor: ${{ inputs.harbor }}
-          registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
           registry_username : ${{ secrets.REGISTRY_USERNAME  }}
           registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
@@ -107,7 +107,6 @@ jobs:
           module: ${{ inputs.module }}
           acr: ${{ inputs.acr }}
           harbor: ${{ inputs.harbor }}
-          registry_login_server: ${{ secrets.REGISTRY_LOGIN_SERVER  }}
           registry_username : ${{ secrets.REGISTRY_USERNAME  }}
           registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
