@@ -72,6 +72,7 @@ jobs:
           registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}
+          gh_token: ${{ secrets.GH_TOKEN }}
   build-amd64-image:
     runs-on: x64
     steps:
@@ -90,6 +91,7 @@ jobs:
           registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}  
+          gh_token: ${{ secrets.GH_TOKEN }}
   build-multi-arch:
     needs: [ build-amd64-image, build-arm64-image ]
     runs-on: x64
