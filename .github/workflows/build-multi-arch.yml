@@ -36,6 +36,10 @@ on:
           description: 'Unique build ID per workflow run'
           type: string
           required: true
+        shortened_version:
+          description: 'Shortened Version to query utils-language-packs repo to copy language packs over for injector builds'
+          type: string
+          required: true
       secrets:
           GH_TOKEN:
               required: true
@@ -50,8 +54,7 @@ on:
           HARBOR_USERNAME:
             required: true
 
-# Should we use version or the updated_tags list instead of tag?
-run-name: Build ${{ inputs.module }}:${{ inputs.tag }}
+run-name: Build ${{ inputs.module }}:${{ inputs.version }}
 
 jobs:
   build-arm64-image:
@@ -73,6 +76,7 @@ jobs:
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}
           gh_token: ${{ secrets.GH_TOKEN }}
+          shortened_version: ${{ inputs.shortened_version }}
   build-amd64-image:
     runs-on: x64
     steps:
@@ -92,6 +96,7 @@ jobs:
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}  
           gh_token: ${{ secrets.GH_TOKEN }}
+          shortened_version: ${{ inputs.shortened_version }}
   build-multi-arch:
     needs: [ build-amd64-image, build-arm64-image ]
     runs-on: x64
@@ -100,7 +105,7 @@ jobs:
         run: |
           echo "${{ inputs.updated_tags }}"
       - name: build-multi-arch
-        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@test-harbor-push
+        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@main
         with:
           version: ${{ inputs.version }}
           amd_tag: ${{ inputs.build_id }}_amd-64
