@@ -39,6 +39,9 @@ on:
         shortened_version:
           description: 'Shortened Version to query utils-language-packs repo to copy language packs over for injector builds'
           type: string
+        is_release:
+          description: 'Whether this is a pre-release or release version'
+          type: string
       secrets:
           GH_TOKEN:
               required: true
