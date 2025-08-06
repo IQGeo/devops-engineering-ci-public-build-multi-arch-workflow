@@ -54,15 +54,14 @@ on:
           HARBOR_USERNAME:
             required: true
 
-# Should we use version or the updated_tags list instead of tag?
-run-name: Build ${{ inputs.module }}:${{ inputs.tag }}
+run-name: Build ${{ inputs.module }}:${{ inputs.version }}
 
 jobs:
   build-arm64-image:
     runs-on: arm64
     steps:
       - name: build-arm64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@shortened_version_test
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
@@ -82,7 +81,7 @@ jobs:
     runs-on: x64
     steps:
       - name: build-amd64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@shortened_version_test
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
@@ -106,7 +105,7 @@ jobs:
         run: |
           echo "${{ inputs.updated_tags }}"
       - name: build-multi-arch
-        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@test-harbor-push
+        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@main
         with:
           version: ${{ inputs.version }}
           amd_tag: ${{ inputs.build_id }}_amd-64
