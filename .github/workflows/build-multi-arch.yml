@@ -36,6 +36,10 @@ on:
           description: 'Unique build ID per workflow run'
           type: string
           required: true
+        shortened_version:
+          description: 'Shortened Version to query utils-language-packs repo to copy language packs over for injector builds'
+          type: string
+          required: true
       secrets:
           GH_TOKEN:
               required: true
@@ -58,7 +62,7 @@ jobs:
     runs-on: arm64
     steps:
       - name: build-arm64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@shortened_version_test
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
@@ -73,11 +77,12 @@ jobs:
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}
           gh_token: ${{ secrets.GH_TOKEN }}
+          shortened_version: ${{ inputs.shortened_version }}
   build-amd64-image:
     runs-on: x64
     steps:
       - name: build-amd64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@shortened_version_test
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
@@ -92,6 +97,7 @@ jobs:
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}  
           gh_token: ${{ secrets.GH_TOKEN }}
+          shortened_version: ${{ inputs.shortened_version }}
   build-multi-arch:
     needs: [ build-amd64-image, build-arm64-image ]
     runs-on: x64
