@@ -27,7 +27,6 @@ on:
         updated_tags:
           description: 'Comma-seperated list of new tags to retag multi arch image as once it is built (pre-release, latest)'
           type: string
-          required: true
         version:
           description: 'Version to build'
           type: string
