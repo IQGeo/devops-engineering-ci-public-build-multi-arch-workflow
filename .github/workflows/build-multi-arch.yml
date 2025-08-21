@@ -44,8 +44,6 @@ on:
       secrets:
           GH_TOKEN:
               required: true
-          REGISTRY_LOGIN_SERVER:
-              required: true
           REGISTRY_USERNAME:
               required: true
           REGISTRY_PASSWORD:
