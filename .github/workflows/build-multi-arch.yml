@@ -84,7 +84,6 @@ jobs:
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}
           gh_token: ${{ secrets.GH_TOKEN }}
           engineering_prefix: ${{ inputs.engineering_prefix }}
-          releases_prefix: ${{ inputs.releases_prefix }}
           shortened_version: ${{ inputs.shortened_version }}
   build-amd64-image:
     runs-on: x64
@@ -106,7 +105,6 @@ jobs:
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}  
           gh_token: ${{ secrets.GH_TOKEN }}
           engineering_prefix: ${{ inputs.engineering_prefix }}
-          releases_prefix: ${{ inputs.releases_prefix }}
           shortened_version: ${{ inputs.shortened_version }}
   build-multi-arch:
     needs: [ build-amd64-image, build-arm64-image ]
