@@ -38,6 +38,14 @@ on:
         shortened_version:
           description: 'Shortened Version to query utils-language-packs repo to copy language packs over for injector builds'
           type: string
+        engineering_prefix:
+          description: 'Engineering prefix to place multi arch images in Harbor'
+          type: string
+          default: devops_sandbox_engineering
+        releases_prefix:
+          description: 'Engineering prefix to place multi arch images in Harbor'
+          type: string
+          default: devops_sandbox_releases
         is_release:
           description: 'Whether this is a pre-release or release version'
           type: string
@@ -75,6 +83,8 @@ jobs:
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}
           gh_token: ${{ secrets.GH_TOKEN }}
+          engineering_prefix: ${{ inputs.engineering_prefix }}
+          releases_prefix: ${{ inputs.releases_prefix }}
           shortened_version: ${{ inputs.shortened_version }}
   build-amd64-image:
     runs-on: x64
@@ -95,6 +105,8 @@ jobs:
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}  
           gh_token: ${{ secrets.GH_TOKEN }}
+          engineering_prefix: ${{ inputs.engineering_prefix }}
+          releases_prefix: ${{ inputs.releases_prefix }}
           shortened_version: ${{ inputs.shortened_version }}
   build-multi-arch:
     needs: [ build-amd64-image, build-arm64-image ]
@@ -117,4 +129,6 @@ jobs:
           registry_password : ${{ secrets.REGISTRY_PASSWORD  }}
           harbor_cli_secret : ${{ secrets.HARBOR_CLI_SECRET  }}
           harbor_username : ${{ secrets.HARBOR_USERNAME  }}
+          engineering_prefix: ${{ inputs.engineering_prefix }}
+          releases_prefix: ${{ inputs.releases_prefix }}
           is_release: ${{ inputs.is_release }}
