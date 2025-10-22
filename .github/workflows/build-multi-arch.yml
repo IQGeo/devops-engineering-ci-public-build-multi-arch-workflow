@@ -137,8 +137,7 @@ jobs:
           amd_tag: ${{ inputs.build_id }}_amd-64
           arm_tag: ${{ inputs.build_id }}_arm-64
           updated_tags: ${{ inputs.updated_tags}}
-          module: ${{ inputs.module }}
-          module_lowercase: ${{ needs.lowercase-module.outputs.module_lowercase }}
+          module: ${{ needs.lowercase-module.outputs.module_lowercase }}
           acr: ${{ inputs.acr }}
           harbor: ${{ inputs.harbor }}
           registry_username : ${{ secrets.REGISTRY_USERNAME  }}
