@@ -68,7 +68,7 @@ jobs:
     runs-on: arm64
     steps:
       - name: build-arm64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@devops/ET-734-platform-workflow
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
@@ -89,7 +89,7 @@ jobs:
     runs-on: x64
     steps:
       - name: build-amd64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@devops/ET-734-platform-workflow
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
