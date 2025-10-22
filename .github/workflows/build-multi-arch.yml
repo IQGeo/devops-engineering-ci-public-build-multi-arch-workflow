@@ -114,7 +114,7 @@ jobs:
         run: |
           echo "${{ inputs.updated_tags }}"
       - name: build-multi-arch
-        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@main
+        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@devops/ET-734-platform-workflow
         with:
           version: ${{ inputs.version }}
           amd_tag: ${{ inputs.build_id }}_amd-64
