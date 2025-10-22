@@ -64,7 +64,21 @@ on:
 run-name: Build ${{ inputs.module }}:${{ inputs.version }}
 
 jobs:
+  lowercase-module:
+    runs-on: ubuntu-latest
+    outputs:
+      module_lowercase: ${{ steps.lowercase.outputs.module_lowercase }}
+    steps:
+      - name: Convert module name to lowercase
+        id: lowercase
+        run: |
+          MODULE_LOWERCASE=$(echo "${{ inputs.module }}" | tr '[:upper:]' '[:lower:]')
+          echo "module_lowercase=$MODULE_LOWERCASE" >> $GITHUB_OUTPUT
+          echo "Original module: ${{ inputs.module }}"
+          echo "Lowercase module: $MODULE_LOWERCASE"
+          
   build-arm64-image:
+    needs: lowercase-module
     runs-on: arm64
     steps:
       - name: build-arm64-image
@@ -76,6 +90,7 @@ jobs:
           tag: ${{ inputs.build_id }}_arm-64
           platform: arm64
           module: ${{ inputs.module }}
+          module_lowercase: ${{ needs.lowercase-module.outputs.module_lowercase }}
           acr: ${{ inputs.acr }}
           harbor: ${{ inputs.harbor }}
           registry_username : ${{ secrets.REGISTRY_USERNAME  }}
@@ -86,6 +101,7 @@ jobs:
           engineering_prefix: ${{ inputs.engineering_prefix }}
           shortened_version: ${{ inputs.shortened_version }}
   build-amd64-image:
+    needs: lowercase-module
     runs-on: x64
     steps:
       - name: build-amd64-image
@@ -97,6 +113,7 @@ jobs:
           tag: ${{ inputs.build_id }}_amd-64
           platform: x64
           module: ${{ inputs.module }}
+          module_lowercase: ${{ needs.lowercase-module.outputs.module_lowercase }}
           acr: ${{ inputs.acr }}
           harbor: ${{ inputs.harbor }}
           registry_username : ${{ secrets.REGISTRY_USERNAME  }}
@@ -107,7 +124,7 @@ jobs:
           engineering_prefix: ${{ inputs.engineering_prefix }}
           shortened_version: ${{ inputs.shortened_version }}
   build-multi-arch:
-    needs: [ build-amd64-image, build-arm64-image ]
+    needs: [ lowercase-module, build-amd64-image, build-arm64-image ]
     runs-on: x64
     steps:
       - name: Debug
@@ -121,6 +138,7 @@ jobs:
           arm_tag: ${{ inputs.build_id }}_arm-64
           updated_tags: ${{ inputs.updated_tags}}
           module: ${{ inputs.module }}
+          module_lowercase: ${{ needs.lowercase-module.outputs.module_lowercase }}
           acr: ${{ inputs.acr }}
           harbor: ${{ inputs.harbor }}
           registry_username : ${{ secrets.REGISTRY_USERNAME  }}
