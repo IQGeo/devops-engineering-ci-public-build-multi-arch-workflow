@@ -24,6 +24,9 @@ on:
           description: 'Module to build (product, devdb, editions)'
           type: string
           required: true
+        main_module:
+          description: 'Whether this module is the main module (product) or a supporting module (devdb, editions)'
+          type: string
         updated_tags:
           description: 'Comma-seperated list of new tags to retag multi arch image as once it is built (pre-release, latest)'
           type: string
@@ -131,13 +134,14 @@ jobs:
         run: |
           echo "${{ inputs.updated_tags }}"
       - name: build-multi-arch
-        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@main
+        uses: IQGeo/devops-engineering-ci-public-multi-arch-action@devops/ET-772-releases-fix
         with:
           version: ${{ inputs.version }}
           amd_tag: ${{ inputs.build_id }}_amd-64
           arm_tag: ${{ inputs.build_id }}_arm-64
           updated_tags: ${{ inputs.updated_tags}}
           module: ${{ needs.lowercase-module.outputs.module_lowercase }}
+          main_module: ${{ inputs.main_module }}
           acr: ${{ inputs.acr }}
           harbor: ${{ inputs.harbor }}
           registry_username : ${{ secrets.REGISTRY_USERNAME  }}
