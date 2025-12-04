@@ -140,7 +140,7 @@ jobs:
           version: ${{ inputs.version }}
           amd_tag: ${{ inputs.build_id }}_amd-64
           arm_tag: ${{ inputs.build_id }}_arm-64
-          updated_tags: ${{ inputs.updated_tags}}
+          updated_tags: ${{ inputs.updated_tags }}
           module: ${{ needs.lowercase-module.outputs.module_lowercase }}
           release_modules: ${{ inputs.release_modules }}
           acr: ${{ inputs.acr }}
