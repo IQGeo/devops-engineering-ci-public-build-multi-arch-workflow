@@ -24,6 +24,10 @@ on:
           description: 'Module to build (product, devdb, editions)'
           type: string
           required: true
+        release_modules:
+          description: 'Comma-separated list of modules to include in release repostitories'
+          required: true
+          type: string
         updated_tags:
           description: 'Comma-seperated list of new tags to retag multi arch image as once it is built (pre-release, latest)'
           type: string
@@ -136,8 +140,9 @@ jobs:
           version: ${{ inputs.version }}
           amd_tag: ${{ inputs.build_id }}_amd-64
           arm_tag: ${{ inputs.build_id }}_arm-64
-          updated_tags: ${{ inputs.updated_tags}}
+          updated_tags: ${{ inputs.updated_tags }}
           module: ${{ needs.lowercase-module.outputs.module_lowercase }}
+          release_modules: ${{ inputs.release_modules }}
           acr: ${{ inputs.acr }}
           harbor: ${{ inputs.harbor }}
           registry_username : ${{ secrets.REGISTRY_USERNAME  }}
