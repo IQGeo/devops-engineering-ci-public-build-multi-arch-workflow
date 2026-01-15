@@ -107,7 +107,7 @@ jobs:
           shortened_version: ${{ inputs.shortened_version }}
   build-amd64-image:
     needs: lowercase-module
-    runs-on: x64
+    runs-on: ubuntu-latest
     steps:
       - name: build-amd64-image
         uses: IQGeo/devops-engineering-ci-public-build-push-action@main
@@ -130,7 +130,7 @@ jobs:
           shortened_version: ${{ inputs.shortened_version }}
   build-multi-arch:
     needs: [ lowercase-module, build-amd64-image, build-arm64-image ]
-    runs-on: x64
+    runs-on: ubuntu-latest
     steps:
       - name: Debug
         run: |
