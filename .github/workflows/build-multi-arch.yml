@@ -56,8 +56,8 @@ on:
           type: string
         download_binaries:
           description: 'Does this build require binaries to be downloaded'
-          type: boolean  
-          default: true
+          type: string  
+          default: 'true'
         
       secrets:
           GH_TOKEN:
