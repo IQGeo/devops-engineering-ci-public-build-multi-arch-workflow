@@ -54,6 +54,11 @@ on:
         is_release:
           description: 'Whether this is a pre-release or release version'
           type: string
+        download_binaries:
+          description: 'Does this build require binaries to be downloaded'
+          type: boolean  
+          default: true
+        
       secrets:
           GH_TOKEN:
               required: true
@@ -87,13 +92,14 @@ jobs:
     runs-on: arm64
     steps:
       - name: build-arm64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@devops/ET-852-fix-binaries
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
           version: ${{ inputs.version }}
           tag: ${{ inputs.build_id }}_arm-64
           platform: arm64
+          download_binaries: ${{ inputs.download_binaries }}
           module: ${{ inputs.module }}
           module_lowercase: ${{ needs.lowercase-module.outputs.module_lowercase }}
           acr: ${{ inputs.acr }}
@@ -110,13 +116,14 @@ jobs:
     runs-on: x64
     steps:
       - name: build-amd64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@devops/ET-852-fix-binaries
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
           version: ${{ inputs.version }}
           tag: ${{ inputs.build_id }}_amd-64
           platform: x64
+          download_binaries: ${{ inputs.download_binaries }}          
           module: ${{ inputs.module }}
           module_lowercase: ${{ needs.lowercase-module.outputs.module_lowercase }}
           acr: ${{ inputs.acr }}
