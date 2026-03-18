@@ -54,6 +54,11 @@ on:
         is_release:
           description: 'Whether this is a pre-release or release version'
           type: string
+        download_binaries:
+          description: 'Does this build require binaries to be downloaded'
+          type: string  
+          default: 'true'
+        
       secrets:
           GH_TOKEN:
               required: true
@@ -94,6 +99,7 @@ jobs:
           version: ${{ inputs.version }}
           tag: ${{ inputs.build_id }}_arm-64
           platform: arm64
+          download_binaries: ${{ inputs.download_binaries }}
           module: ${{ inputs.module }}
           module_lowercase: ${{ needs.lowercase-module.outputs.module_lowercase }}
           acr: ${{ inputs.acr }}
@@ -117,6 +123,7 @@ jobs:
           version: ${{ inputs.version }}
           tag: ${{ inputs.build_id }}_amd-64
           platform: x64
+          download_binaries: ${{ inputs.download_binaries }}          
           module: ${{ inputs.module }}
           module_lowercase: ${{ needs.lowercase-module.outputs.module_lowercase }}
           acr: ${{ inputs.acr }}
