@@ -71,6 +71,11 @@ on:
           HARBOR_USERNAME:
             required: true
 
+permissions:
+  contents: read      # Checkout repositories and use composite actions
+  actions: read       # Download artifacts
+  packages: write     # Push to container registries
+
 run-name: Build ${{ inputs.module }}:${{ inputs.version }}
 
 jobs:
