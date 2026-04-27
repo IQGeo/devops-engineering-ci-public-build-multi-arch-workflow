@@ -58,9 +58,6 @@ on:
           description: 'Does this build require binaries to be downloaded'
           type: string  
           default: 'true'
-        base_image:
-          type: string
-          required: false
         
       secrets:
           GH_TOKEN:
@@ -123,7 +120,6 @@ jobs:
           gh_token: ${{ secrets.GH_TOKEN }}
           engineering_prefix: ${{ inputs.engineering_prefix }}
           shortened_version: ${{ inputs.shortened_version }}
-          base_image: ${{ inputs.base_image }}
   build-amd64-image:
     needs: lowercase-module
     runs-on: x64
@@ -152,7 +148,6 @@ jobs:
           gh_token: ${{ secrets.GH_TOKEN }}
           engineering_prefix: ${{ inputs.engineering_prefix }}
           shortened_version: ${{ inputs.shortened_version }}
-          base_image: ${{ inputs.base_image }}
   build-multi-arch:
     needs: [ lowercase-module, build-amd64-image, build-arm64-image ]
     runs-on: x64
