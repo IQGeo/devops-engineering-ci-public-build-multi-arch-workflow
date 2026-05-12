@@ -96,14 +96,8 @@ jobs:
     needs: lowercase-module
     runs-on: arm64
     steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: injector-dockerfile
-          path: ${{ github.workspace }}
-      - name: verify injector exists
-        run: ls -la
       - name: build-arm64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@devops/ET-778-centralized-injector-modifications
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
@@ -126,14 +120,8 @@ jobs:
     needs: lowercase-module
     runs-on: x64
     steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: injector-dockerfile
-          path: ${{ github.workspace }}
-      - name: verify injector exists
-        run: ls -la
       - name: build-amd64-image
-        uses: IQGeo/devops-engineering-ci-public-build-push-action@main
+        uses: IQGeo/devops-engineering-ci-public-build-push-action@devops/ET-778-centralized-injector-modifications
         with:
           dockerfile_path: ${{ inputs.dockerfile_path }}
           docker_context: ${{ inputs.docker_context }}
