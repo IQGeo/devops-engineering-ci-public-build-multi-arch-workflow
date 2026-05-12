@@ -99,7 +99,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: injector-dockerfile
-          path: .github/workflows
+          path: .
       - name: build-arm64-image
         uses: IQGeo/devops-engineering-ci-public-build-push-action@main
         with:
@@ -127,7 +127,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: injector-dockerfile
-          path: .github/workflows
+          path: .
       - name: build-amd64-image
         uses: IQGeo/devops-engineering-ci-public-build-push-action@main
         with:
