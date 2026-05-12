@@ -99,7 +99,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: injector-dockerfile
-          path: .
+          path: ${{ github.workspace }}
       - name: verify injector exists
         run: ls -la
       - name: build-arm64-image
@@ -129,7 +129,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: injector-dockerfile
-          path: .
+          path: ${{ github.workspace }}
       - name: verify injector exists
         run: ls -la
       - name: build-amd64-image
