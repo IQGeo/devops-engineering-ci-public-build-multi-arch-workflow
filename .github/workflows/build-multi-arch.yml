@@ -100,6 +100,8 @@ jobs:
         with:
           name: injector-dockerfile
           path: .
+      - name: verify injector exists
+        run: ls -la
       - name: build-arm64-image
         uses: IQGeo/devops-engineering-ci-public-build-push-action@main
         with:
@@ -128,6 +130,8 @@ jobs:
         with:
           name: injector-dockerfile
           path: .
+      - name: verify injector exists
+        run: ls -la
       - name: build-amd64-image
         uses: IQGeo/devops-engineering-ci-public-build-push-action@main
         with:
