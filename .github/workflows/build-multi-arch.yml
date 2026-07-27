@@ -75,8 +75,7 @@ permissions:
   contents: read      # Checkout repositories and use composite actions
   actions: read       # Download artifacts
   packages: write     # Push to container registries
-  attestations: write # Generate and store build provenance attestations
-  id-token: write     # Request OIDC token for keyless signing
+  id-token: write     # Request OIDC token for cosign keyless signing
 
 run-name: Build ${{ inputs.module }}:${{ inputs.version }}
 
